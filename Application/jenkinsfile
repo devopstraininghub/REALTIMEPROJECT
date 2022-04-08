@@ -9,9 +9,9 @@ pipeline {
         }
         stage ('Building Docker Image'){
             steps {
-                sh 'cd Application && docker build -t devopshubg333/japp:v1 .'
-                sh 'docker login -u devopshubg333 -p Callidus21!@'
-                sh 'docker push devopshubg333/japp:v1'
+                sh 'cd Application && docker build -t memrlazy/japp:v1 .'
+                sh 'docker login -u memrlazy -p mrlazy@123'
+                sh 'docker push memrlazy/japp:v1'
             }
         }
     }
