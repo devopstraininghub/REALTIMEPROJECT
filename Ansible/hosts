@@ -1,0 +1,3 @@
+[deploy]
+54.208.68.220 ansible_ssh_private_key_file=/etc/ansible/id_rsa ansible_user=ec2-user
+
