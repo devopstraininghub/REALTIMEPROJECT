@@ -29,5 +29,5 @@
 
   - name: install demo app
     shell: |
-      docker run -dit --rm -p 8080:8080 {{ image_name }}:{{ image_tag }}
+      docker run -dit --rm -p 8080:8080 image_name:image_tag
       
