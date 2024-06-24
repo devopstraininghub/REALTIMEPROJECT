@@ -12,6 +12,8 @@
     - name: tag image
       command: docker tag app:latest ramanijadala/app:latest
     - name: Log in to Docker Hub
+      collections:
+        - community.docker
       community.docker.docker_login:
         registry_url: https://index.docker.io/v1/
         username: ramanijadala
