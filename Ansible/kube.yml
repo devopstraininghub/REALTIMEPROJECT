@@ -2,6 +2,8 @@
 - name: Deploy Kubernetes Application
   hosts: k8s  # Replace with your target Kubernetes master host or group
   gather_facts: yes  # Gather facts about the target host
+  become: yes  # Use sudo for copying if required
+  become_user: root  
 
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
