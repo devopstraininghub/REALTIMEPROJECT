@@ -15,7 +15,7 @@
       community.docker.docker_login:
         registry_url: https://index.docker.io/v1/
         username: ramanijadala
-        password: Ramani@14
+        password: dckr_pat_Exvv-2BEaMJv1lLvzvo06xelUjY
     - name: Push image
       command: docker push ramanijadal3118/app:latest
     - name: Run container
