@@ -6,10 +6,10 @@
   tasks:
     - name: Copy deployment.yaml to Kubernetes master
       copy:
-        src: /var/lib/jenkins/workspace/jenkins-ansible/deployment.yaml  # Assuming Jenkins workspace variable
+        src: /var/lib/jenkins/workspace/jenkins-ansible/deployment.yml  # Assuming Jenkins workspace variable
         dest: /home/ec2-user/
       become: yes  # Use sudo for copying if required
       become_user: root  # Use a privileged user for copying if required
 
     - name: Apply Deployment
-      command: kubectl apply -f /home/ec2-user/deployment.yaml
+      command: kubectl apply -f /home/ec2-user/deployment.yml
