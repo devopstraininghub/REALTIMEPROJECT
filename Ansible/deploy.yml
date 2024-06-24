@@ -29,5 +29,5 @@
 
   - name: install demo app
     shell: |
-      docker run -dit --rm -p 8085:8080 ansible-docker:31
+      docker run -dit --rm -p 8085:8080 ansible-docker:34
       
