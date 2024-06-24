@@ -1,5 +1,5 @@
 --- 
-- hosts: appserver
+- hosts: deploy
   name: "Deploying Demo Application"
   tasks: 
   - name: install docker
