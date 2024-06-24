@@ -16,6 +16,6 @@ public class WelcomeController {
 		
 		
 		
-		return "Congratulations DevOps Engineers!!! AWS DevOps is a recesion-proof IT Career, All the best for your Bright future & Be in touch - Madhukiran 7396627149 / 8374343733"; //"application/json" mean this is a text not a redirect
+		return "Oh, congratulations! 🎉 You have successfully deployed your application on Kubernetes with Ansible. 🚀"; //"application/json" mean this is a text not a redirect
 	}
 }
