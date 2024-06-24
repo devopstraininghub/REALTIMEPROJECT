@@ -8,7 +8,7 @@
     - name: Build Docker Image
       command: docker build -t app .
       args:
-        chdir: /var/lib/jenkins/workspace/piepline/Ansible
+        chdir: /var/lib/jenkins/workspace/piepline
     - name: tag image
       command: docker tag app:latest ramanijadala/app:latest
     - name: Log in to Docker Hub
