@@ -1,5 +1,5 @@
 - name: docker build and push
-  hosts: local  # Replace with the hostname or IP address of your target server
+  hosts: k8s  # Replace with the hostname or IP address of your target server
   become: yes  # Run tasks with sudo privileges
   tasks:
     - name: Build Docker Image
