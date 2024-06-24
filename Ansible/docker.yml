@@ -5,7 +5,7 @@
     - name: Build Docker Image
       command: docker build -t k8s .
       args:
-        chdir: /var/lib/jenkins/workspace/jenkins-ansible
+        chdir: /var/lib/jenkins/workspace/jenkins-ansible/Ansible/deployment.yml
     - name: tag image
       command: docker tag k8s:8
     - name: Log in to Docker Hub
