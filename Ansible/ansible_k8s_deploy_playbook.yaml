@@ -12,13 +12,18 @@
         dest: /home/ec2-user/k8s_deployment.yaml
         mode: '0644'
 
-    - name: Ensure kubeconfig exists on target (optional – use if needed)
+    - name: Check if kubeconfig exists on remote host
+      stat:
+        path: /home/ec2-user/.kube/config
+      register: kubeconfig_stat
+
+    - name: Copy kubeconfig to target if missing
       copy:
         src: "{{ playbook_dir }}/kubeconfig"
         dest: /home/ec2-user/.kube/config
         mode: '0600'
         owner: ec2-user
-      when: not lookup('file', '/home/ec2-user/.kube/config', errors='ignore')
+      when: not kubeconfig_stat.stat.exists
 
     - name: Apply Kubernetes deployment
       command: kubectl apply -f /home/ec2-user/k8s_deployment.yaml
