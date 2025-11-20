@@ -1,91 +1,93 @@
-  pipeline {
+pipeline {
     agent any
 
-
     stages {
+
         stage('Checkout Code') {
             steps {
-                echo 'scm git'
+                echo 'Checking out source code'
                 git branch: 'main', url: 'https://github.com/devopstraininghub/REALTIMEPROJECT.git'
             }
         }
-    	
 
-        stage('BuildingJar') {
+        stage('Build Jar') {
             steps {
-                echo 'maven build'
+                echo 'Running Maven build'
                 sh 'cd Application && mvn clean package'
             }
         }
-		
-	
-		
-        stage('sonar') {
+
+        stage('Sonar Scan') {
             steps {
-                echo 'scanning project'
-                sh 'ls -ltr'
-                sh '''cd Application && mvn sonar:sonar \\
-                      -Dsonar.host.url=http://3.88.43.182:9000 \\
-                      -Dsonar.login=squ_f7d38d9efecde942052011718376e7479ae66764'''
-            }
-    	}
-       stage('Build docker image'){
-            steps{
-                script{
-                    echo 'docker image build'
-					sh 'cd Application && docker build -t devopshubg333/k8s:${BUILD_NUMBER} .'
-                }
-            }
-        }
-		
-       stage('docker image scan'){
-        steps{
-            sh "trivy image devopshubg333/k8s:${BUILD_NUMBER}"
-        }
-    }		
- 
-
-		 stage('Push image to Hub'){
-            steps{
-                script{
-                   withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
-                   sh 'docker login -u devopshubg333 -p ${dockerhub}'
-
-              }
-                   sh 'docker push devopshubg333/k8s:${BUILD_NUMBER}'
-                }
-            }
-        }
-		
-      stage('Update kubernetes Deployment manifest File') {
-        environment {
-            GIT_REPO_NAME = "REALTIMEPROJECT"
-            GIT_USER_NAME = "devopstraininghub"
-        }
-        steps {
-            withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                echo 'Running SonarQube scan'
                 sh '''
-                    git config user.email "madhu@gmail.com"
-                    git config user.name "madhu"
-                    BUILD_NUMBER=${BUILD_NUMBER}
-                  
-                    sed -i "s/k8s:.*/k8s:${BUILD_NUMBER}/g" Ansible/k8s_deployment.yaml
-                    git add .
-                    git commit -m "Update deployment image tag to version ${BUILD_NUMBER}"
-                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    cd Application
+                    mvn sonar:sonar \
+                      -Dsonar.host.url=http://44.203.120.255:9000 \
+                      -Dsonar.login=squ_857bc378b399cc95305af238a1c3f0e10e243415
                 '''
             }
         }
-    }
 
-    stage('k8s Deployment using ansible'){
-            steps{
-              
-                    script{
-                        ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/inventory', playbook: 'Ansible/ansible_k8s_deploy_playbook.yaml'
-                   
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo 'Building Docker Image'
+                    sh 'cd Application && docker build -t devopshubg333/k8s:${BUILD_NUMBER} .'
                 }
             }
         }
-}
+
+        stage('Docker Image Scan') {
+            steps {
+                sh 'trivy image devopshubg333/k8s:${BUILD_NUMBER}'
+            }
+        }
+
+        stage('Push Image to DockerHub') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhub')]) {
+                        sh 'echo "${dockerhub}" | docker login -u devopshubg333 --password-stdin'
+                    }
+                    sh 'docker push devopshubg333/k8s:${BUILD_NUMBER}'
+                }
+            }
+        }
+
+        stage('Update Kubernetes Deployment Manifest File') {
+            environment {
+                GIT_REPO_NAME = "REALTIMEPROJECT"
+                GIT_USER_NAME = "devopstraininghub"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh '''
+                        git config user.email "madhu@gmail.com"
+                        git config user.name "madhu"
+
+                        sed -i "s|k8s:.*|k8s:${BUILD_NUMBER}|g" Ansible/k8s_deployment.yaml
+
+                        git add .
+                        git commit -m "Update deployment image tag to version ${BUILD_NUMBER}"
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:main
+                    '''
+                }
+            }
+        }
+
+        stage('K8s Deployment using Ansible') {
+            steps {
+                script {
+                    ansiblePlaybook(
+                        credentialsId: 'ssh',
+                        disableHostKeyChecking: true,
+                        installation: 'ansible',
+                        inventory: '/etc/ansible/inventory',
+                        playbook: 'Ansible/ansible_k8s_deploy_playbook.yaml'
+                    )
+                }
+            }
+        }
+    }
 }
