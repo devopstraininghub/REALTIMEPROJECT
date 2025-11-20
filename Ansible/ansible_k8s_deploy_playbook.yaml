@@ -6,7 +6,7 @@
   tasks:
     - name: Copy k8s_deployment.yaml file to eks cluster
       copy:
-        src: /var/lib/jenkins/workspace/cicdprject/Ansible/k8s_deployment.yaml  # Assuming Jenkins workspace variable
+        src: /var/lib/jenkins/workspace/cicd/Ansible/k8s_deployment.yaml  # Assuming Jenkins workspace variable
         dest: /home/ec2-user/
 
     - name: Apply Deployment
