@@ -14,3 +14,5 @@
 
     - name: Apply Kubernetes deployment
       command: kubectl apply -f /home/ec2-user/k8s_deployment.yaml
+      environment:
+      KUBECONFIG: /home/ec2-user/.kube/config
