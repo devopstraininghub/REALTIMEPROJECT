@@ -82,7 +82,7 @@
             steps{
               
                     script{
-                        ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/', playbook: 'Ansible/ansible_k8s_deploy_playbook.yaml'
+                        ansiblePlaybook credentialsId: 'ssh', disableHostKeyChecking: true, installation: 'ansible', inventory: '/etc/ansible/inventory', playbook: 'Ansible/ansible_k8s_deploy_playbook.yaml'
                    
                 }
             }
