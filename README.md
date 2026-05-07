@@ -1,2 +1,1 @@
-# devops-Real Time Project
-
+# DevOps-Real Time Project - Continues delivery
