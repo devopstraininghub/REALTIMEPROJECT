@@ -1,2 +1,1 @@
-# devops-demo-Real Time Project
-# training batch demo Real Time Project
+# DevOps-Real Time Project - Continues delivery
