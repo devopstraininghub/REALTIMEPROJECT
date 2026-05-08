@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: mc-app
-        image: kalyan3546/cicd-ansible:3
+        image: kalyan3546/cicd-ansible:4
         ports:
         - containerPort: 8080
 ---
